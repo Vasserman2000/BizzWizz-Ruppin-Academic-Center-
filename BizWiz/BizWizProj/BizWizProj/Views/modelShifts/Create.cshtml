@@ -1,0 +1,64 @@
+﻿@model BizWizProj.Models.ModelShift
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>ModelShift</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.NumOfEmployees, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NumOfEmployees, additionalViewData: new
+           {
+               htmlAttributes = new
+               {
+
+                   min = 0,
+                   max = int.MaxValue
+               }
+           })
+                @Html.ValidationMessageFor(model => model.NumOfEmployees, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Start Time:  " + Convert.ToDateTime(HttpContext.Current.Request.QueryString["start"]).Hour + ":" + Convert.ToDateTime(HttpContext.Current.Request.QueryString["end"]).Minute, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Start, new { @Value = HttpContext.Current.Request.QueryString["start"] })
+                @Html.ValidationMessageFor(model => model.Start, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("End Time:  " + Convert.ToDateTime(HttpContext.Current.Request.QueryString["end"]).Hour + ":" + Convert.ToDateTime(HttpContext.Current.Request.QueryString["end"]).Minute, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.End, new { @Value = HttpContext.Current.Request.QueryString["end"] })
+                @*, *@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,140 @@
+﻿<script src="@Url.Content("~/Scripts/DayPilot/daypilot-all.min.js")" type="text/javascript"></script>
+@{
+    ViewBag.Title = "Index";
+}
+<!doctype html>
+<html>
+<head>
+    <title>
+    </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="~/Scripts/progressbar_filling.js"></script>
+</head>
+<body>
+
+    <br /><br />
+    <h1 style=" margin-left: 423px; margin-bottom: 34px; margin-top: -13px;">BizzWizz Home</h1>
+    <div style="float:left; width: 170px;">
+        <div id="nav">
+        </div>
+    </div>
+    <container style="float:right; width: 170px;">
+        <div style=" float:right; width: 170px;">
+            <h4>Employee Hours</h4>
+            <div>
+                @{
+                    if (ViewBag.CurrentUser.User.EmployeeType == BizWizProj.Models.EmployeeType.Manager)
+                    {
+                        foreach (var user in ViewBag.UsersHours)
+                        {
+                            if (user.User.EmployeeType != BizWizProj.Models.EmployeeType.Manager)
+                            {
+                            <div>
+                                @user.User.FullName  @user.Hours hours
+                            </div>
+
+                            <div id="@user.User.ID" class=" progress">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="30" style="width: 0%; ">
+                                    <span class="sr-only">0% Complete</span>
+                                </div>
+                                <script>
+                                    var temp1 = @user.User.ID;
+                                    var temp2 = temp1.toString();
+                                    $("#"+temp2).progressbar( @user.Hours);
+                                </script>
+                            </div>
+                        }
+
+                        }
+                    }
+                    else
+                    {
+                        <div>
+                            @ViewBag.CurrentUser.User.FullName  @ViewBag.CurrentUser.Hours hours
+                        </div>
+                        <div id="@ViewBag.CurrentUser.User.ID" class=" progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="30" style="width: 0%; ">
+                                <span class="sr-only">0% Complete</span>
+                            </div>
+                            <script>
+                                var temp1 = @ViewBag.CurrentUser.User.ID;
+                                var temp2 = temp1.toString();
+                                $("#"+temp2).progressbar( @ViewBag.CurrentUser.Hours);
+                            </script>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </container>
+
+    <!--System Notices part starts here-->
+    @{
+        var message = "";
+        if (ViewBag.NoticesForMe.Count > 0)
+        {
+            for (var i = 0; i < ViewBag.NoticesForMe.Count; i++)
+            {
+                message += "<b>On:</b> " + ViewBag.NoticesForMe[i].Date +
+                    "<br/><b>From:</b> " + ViewBag.NoticesForMe[i].From +
+                    "<br/><b>Message:</b> <font color=\"blue\">"
+                    + ViewBag.NoticesForMe[i].Text + "</font color><br><br>";
+            }
+        }
+        else
+        {
+            message = "<font color=\"white\">Currently you have no messages.</font color>";
+        }
+    }
+    <!--System Notices part ends here-->
+    <div style="float:left; width: 160px;">
+        <div id="nav">
+        </div>
+    </div>
+    <div class="note" style="float:left;margin: 0px 170px;">
+        <a href="javascript:dp.commandCallBack('today');">Today</a>
+    </div>
+    <div style="margin-left: 170px; margin-right:190px;">
+        <div id="dap">
+            @Html.DayPilotCalendar("dp", new DayPilot.Web.Mvc.DayPilotCalendarConfig
+{
+
+    BackendUrl = Url.Action("Backend", "ClosedShifts"),
+    ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+    TimeFormat = DayPilot.Web.Mvc.Enums.TimeFormat.Clock24Hours,
+    EventClickHandling = DayPilot.Web.Mvc.Events.Calendar.EventClickHandlingType.JavaScript,
+    EventClickJavaScript = "PopIt(e)",
+    
+})
+        </div>
+    </div>
+    <div id="wrapper" style="border: ridge; margin: -217px 0px 0px 0px; margin-left: -2px; background-color: #ad1d28; border-color: #911821; width: 146px; padding: 5px; ">
+        <marquee onmouseover="stop();" onmouseout="start();" height="200px" direction="up" scrollamount="2">
+            <div id="L" style="font-family:'Lucida Console';"></div>
+        </marquee>
+    </div>
+    <script type="text/javascript">
+        var nav = new DayPilot.Navigator("nav");
+        nav.showMonths = 1;
+        nav.skipMonths = 1;
+        nav.selectMode = "week";
+        nav.init();
+        dp.commandCallBack('today');
+        dp.commandCallBack('today');
+        nav.onTimeRangeSelected = function (args) {
+            dp.startDate = args.day;
+            dp.update();
+            dp.commandCallBack('navigate');
+        };
+        function PopIt(e) {
+            $.post("ClosedShifts/idSave", {
+                shiftid: e.id()
+            })
+            var m = new DayPilot.Modal();
+            m.showUrl('@Url.Action("PopScreen", "ClosedShifts")');
+        }
+        document.getElementById("L").innerHTML = '@Html.Raw(HttpUtility.JavaScriptStringEncode(message))';
+    </script>
+</body>
+</html>

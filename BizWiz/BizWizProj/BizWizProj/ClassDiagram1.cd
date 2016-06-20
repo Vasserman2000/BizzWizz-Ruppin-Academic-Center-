@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BizWizProj.Models.ClosedShift">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <AssociationLine Name="ShiftManager" Type="BizWizProj.Models.BizUser">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.161" Y="0.3" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIBAAAAACAAgAAAAAAAAAAAAAAAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Models\ClosedShift.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShiftManager" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Workers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BizWizProj.Models.BizUser">
+    <Position X="0.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAhIAAAAAAQAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BizUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EmployeeType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BizWizProj.Models.ModelShift">
+    <Position X="5.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAAgAAAAAAAAAAAAAACAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Models\ModelShift.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BizWizProj.Models.OpenShift">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIBAAAAACgAgAAAAgAAAAAAAAACAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Models\OpenShift.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShiftManager" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Workers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BizWizProj.Models.StockItem">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAgAAACAA=</HashCode>
+      <FileName>Models\StockItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BizWizProj.Models.SystemNotices">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAAAAAAAAAIAAAAAAAAAIAAABAAAACAAAAAA=</HashCode>
+      <FileName>Models\SystemNotices.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="To" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BizWizProj.Models.UserHours">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\UserHours.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BizWizProj.Models.UserPref">
+    <Position X="5.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAggAAAAAAAAAoAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\UserPref.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BizWizProj.Models.Worker">
+    <Position X="4" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Worker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="BizWizProj.Models.EmployeeType">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAIAAAAAAAAAAACAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BizUser.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

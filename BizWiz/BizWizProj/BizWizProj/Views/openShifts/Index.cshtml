@@ -1,0 +1,120 @@
+﻿<script src="@Url.Content("~/Scripts/DayPilot/daypilot-all.min.js")" type="text/javascript"></script>
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+<h1 style="text-align:center">Shift In Progress</h1>
+<div id="dp">
+    @{
+        if (((BizWizProj.Models.BizUser)Session["user"]).EmployeeType == BizWizProj.Models.EmployeeType.Manager || ((BizWizProj.Models.BizUser)Session["user"]).EmployeeType == BizWizProj.Models.EmployeeType.SuperShiftManager)
+        {
+            @Html.DayPilotCalendar("dp", new DayPilot.Web.Mvc.DayPilotCalendarConfig
+            {
+                BackendUrl = Url.Action("Backend", "OpenShifts"),
+                ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+                TimeFormat = DayPilot.Web.Mvc.Enums.TimeFormat.Clock24Hours,
+                EventClickHandling = DayPilot.Web.Mvc.Events.Calendar.EventClickHandlingType.JavaScript,
+                EventClickJavaScript = "EditShifts(e)",
+            })
+        }
+        else
+        {
+            @Html.DayPilotCalendar("dp", new DayPilot.Web.Mvc.DayPilotCalendarConfig
+            {
+                BackendUrl = Url.Action("Backend", "OpenShifts"),
+                ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+                TimeFormat = DayPilot.Web.Mvc.Enums.TimeFormat.Clock24Hours,
+            })
+        }
+    }
+
+</div>
+<br />
+
+<div id="block" style="margin-left:-62px">
+
+    @*Close Shifts*@
+    @using (Html.BeginForm("OpenToClose", "OpenShifts"))
+    {
+        BizWizProj.Models.EmployeeType currentType = (Session["user"] as BizWizProj.Models.BizUser).EmployeeType;
+        if (currentType == BizWizProj.Models.EmployeeType.Manager || currentType == BizWizProj.Models.EmployeeType.SuperShiftManager)
+        {
+            <div style="text-align:center">
+                <input type="submit" value="Close Shift" class="btn btn-default" style="margin-left: -43px; " />
+            </div>
+        }
+    }
+
+    @*Get Shifts*@
+    @using (Html.BeginForm("ModelTopen", "OpenShifts"))
+    {
+        BizWizProj.Models.EmployeeType currentType = (Session["user"] as BizWizProj.Models.BizUser).EmployeeType;
+        if (currentType == BizWizProj.Models.EmployeeType.Manager || currentType == BizWizProj.Models.EmployeeType.SuperShiftManager)
+        {
+            <div style="text-align:center">
+                <input type="submit" value="Get Shifts" class="btn btn-default" style="margin-top: -62px; margin-left: 162px; " id="getBtn" onclick="GetShiftHide()" />
+            </div>
+        }
+    }
+
+
+</div>
+<script type="text/javascript">
+
+        @if ((string)Session["msg"] == "true")
+        {
+            System.Web.HttpContext.Current.Response.Write("<SCRIPT> alert('there is already a Shift schedule in this date')</SCRIPT>");
+            Session["msg"] = "false";
+        }
+    dp.commandCallBack('nextWeek'); //Setting the Shift in progress to always be in next Week
+    dp.contextMenu = new DayPilot.Menu({
+        items: [
+            {
+                text: "Want", onclick: function (args) {
+                    Post(this.source.value(), 1)
+                    this.source.data.backColor = "green";
+                    dp.events.update(this.source);
+                }
+            },
+            { text: "-" },
+            {
+                text: "Don't Care", onclick: function (args) {
+                    this.source.data.backColor = "blue";
+                    Post(this.source.value(), 2)
+                    dp.events.update(this.source);
+                }
+            },
+            { text: "-" },
+            {
+                text: "Don't Want", onclick: function (args) {
+                    this.source.data.backColor = "red";
+                    Post(this.source.value(), 3)
+                    dp.events.update(this.source);
+                }
+            },
+
+
+        ]
+    });
+
+    function Post(shiftID, pref) {
+        $.post("OpenShifts/SendShift",
+        {
+            shiftID: shiftID,
+            preference: pref
+        })
+    }
+
+    function EditShifts(e) {
+        var m = new DayPilot.Modal();
+        m.closed = function () {
+            dp.commandCallBack('refresh');
+            location.reload();
+        };
+        m.showUrl('@Url.Action("EditShift", "OpenShifts")?ShiftID=' + e.id());
+    }
+
+
+
+</script>

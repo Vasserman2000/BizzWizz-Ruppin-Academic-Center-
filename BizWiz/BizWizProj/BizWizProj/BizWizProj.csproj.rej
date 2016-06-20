@@ -1,0 +1,9 @@
+diff a/BizWizProj/BizWizProj/BizWizProj.csproj b/BizWizProj/BizWizProj/BizWizProj.csproj	(rejected hunks)
+@@ -177,6 +177,7 @@
+     </Compile>
+     <Compile Include="Models\AccountViewModels.cs" />
+     <Compile Include="Models\ClosedShift.cs" />
++    <Compile Include="Models\HoursSum.cs" />
+     <Compile Include="Models\MessageServices.cs" />
+     <Compile Include="Models\OpenShift.cs" />
+     <Compile Include="Models\ModelShift.cs" />

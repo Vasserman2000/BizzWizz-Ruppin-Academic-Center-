@@ -1,0 +1,37 @@
+﻿<script src="@Url.Content("~/Scripts/DayPilot/daypilot-all.min.js")" type="text/javascript"></script>
+@{
+    ViewBag.Title = "Index";
+}
+<br /><br />
+<h1 style="text-align:center">Weekly Schedule Model</h1>
+<div id="dp">
+    @Html.ActionLink("Create New shift", "Create")
+    @Html.DayPilotCalendar("dp", new DayPilot.Web.Mvc.DayPilotCalendarConfig
+{
+
+    BackendUrl = Url.Action("Backend", "ModelShifts"),
+    ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+    EventDeleteHandling = DayPilot.Web.Mvc.Events.Calendar.EventDeleteHandlingType.CallBack,
+    TimeFormat = DayPilot.Web.Mvc.Enums.TimeFormat.Clock24Hours,
+    TimeRangeSelectedHandling = DayPilot.Web.Mvc.Events.Calendar.TimeRangeSelectedHandlingType.JavaScript,
+    TimeRangeSelectedJavaScript = "create(start, end)",
+})
+</div>
+
+<script type="text/javascript">
+    //Sets the calender to May the 1st 2016. so the modelshifts will always be in the same week 
+    dp.commandCallBack('initNav');
+
+    function create(start, end) {
+        var m = new DayPilot.Modal();
+        m.closed = function () {
+            if (this.result == "OK") {
+                dp.commandCallBack('refresh');
+            }
+            dp.clearSelection();
+            location.reload();
+        };
+        m.showUrl('@Url.Action("Create", "ModelShifts")?start=' + start + '&end=' + end);
+    }
+
+</script>

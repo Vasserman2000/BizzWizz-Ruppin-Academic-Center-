@@ -1,0 +1,102 @@
+﻿@model BizWizProj.Models.OpenShift
+
+
+
+<div class="box-body">
+    <h1>Edit Shift Workers:</h1>
+    <h3>Recommended number of employees: @Model.NumOfEmployees</h3>
+
+    @*//Form to choose shift manager*@
+    <div class="well">
+        @using (Html.BeginForm("SaveShift_Manager", "OpenShifts", new { shiftId = Model.ID }, FormMethod.Post))
+        {
+            <h5>Select Shift Manager:</h5>
+            <ul class="list-group">
+                @{
+            foreach (BizWizProj.Models.UserPref user in Model.PotentialWorkers)
+            {
+                bool Checked = false;
+                string prefString = "";
+                if (Model.ShiftManager != null)
+                {
+                    if (Model.ShiftManager.ID == user.UserID)
+                    {
+                        Checked = true;
+                    }
+                }
+                if (user.IsManager)
+                {
+                    switch (user.Preference)
+                    {
+                        case 0:
+                            prefString = " (no preference)";
+                            break;
+                        case 1:
+                            prefString = " (Want)";
+                            break;
+                        case 2:
+                            prefString = " (Don't Care)";
+                            break;
+                        case 3:
+                            prefString = " (Don't Want)";
+                            break;
+                    }
+                    <li class="list-group-item">
+                        @Html.RadioButton("managerSel", @user.UserID.ToString(), Checked)
+                        @Html.Label(user.UserName + prefString)
+                    </li>
+                }
+            }
+                }
+            </ul>
+            <input type="Submit" value="Save Shift Manager" class="btn btn-default pull-right" />
+        }
+    </div>
+
+    <div class="well">
+        @*//Form to choose shift manager*@
+        @using (Html.BeginForm("SaveShift_Employees", "OpenShifts", new { shiftId = Model.ID }, FormMethod.Post))
+        {
+            <ul class="list-group">
+                @{
+            foreach (BizWizProj.Models.UserPref user in Model.PotentialWorkers)
+            {
+                bool Checked = false;
+                string prefString = "";
+                if (Model.Workers != null)
+                {
+                    if (Model.Workers.Any(w => w.userID == user.UserID))
+                    {
+                        Checked = true;
+                    }
+                }
+                if (!user.IsManager)
+                {
+                    switch (user.Preference)
+                    {
+                        case 0:
+                            prefString = " (no preference)";
+                            break;
+                        case 1:
+                            prefString = " (Want)";
+                            break;
+                        case 2:
+                            prefString = " (Don't Care)";
+                            break;
+                        case 3:
+                            prefString = " (Don't Want)";
+                            break;
+                    }
+                    <li class="list-group-item">
+                        @Html.CheckBox(@user.UserID.ToString(), Checked)
+                        @Html.Label(user.UserName + prefString)
+                    </li>
+                }
+            }
+                }
+            </ul>
+            <input type="Submit" value="Save Employees" class="btn btn-default pull-right" />
+        }
+    </div>
+</div>
+<br />
